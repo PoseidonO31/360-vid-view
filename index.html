@@ -125,12 +125,25 @@
     }
 
     // --- UI wiring ---
-    overlay.addEventListener('click', () => {
-      video.play().then(() => {
+overlay.addEventListener('click', async () => {
+  // Prevent multiple calls if already playing
+  if (!video.paused) return;
+  
+  try {
+    await video.play(); 
+
+    // Use a small timeout to ensure the video element gets time to load/play before hiding the overlay
+    setTimeout(() => {
         overlay.style.display = 'none';
         controls.style.display = 'flex';
-      }).catch(err => alert('Could not start video: ' + err.message));
-    });
+    }, 100); 
+
+  } catch (err) {
+    // This handles common browser autoplay policy errors
+    console.error('Error playing video:', err);
+    alert('Please click again, or ensure the video is available.');
+  }
+});
 
     const btnMute = document.getElementById('btnMute');
     btnMute.addEventListener('click', () => {
