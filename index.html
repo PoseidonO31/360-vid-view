@@ -169,4 +169,10 @@ overlay.addEventListener('click', async () => {
     });
 
     // --- Render loop ---
-    function animate
+    // 🚀 CRITICAL: START THE THREE.JS RENDERING LOOP
+function animate() {
+  requestAnimationFrame(animate);
+  renderer.render(scene, camera);
+}
+// This command tells the browser to start running the animation
+animate();
